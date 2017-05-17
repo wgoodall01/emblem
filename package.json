@@ -1,0 +1,27 @@
+{
+  "name": "emblem",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "url": "git@github.com:wgoodall01/emblem.git",
+    "type": "git"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node server.js",
+	"build": "cd client && yarn build --silent",
+    "dev-server": "nodemon server.js",
+	"dev-client": "cd client && yarn start --silent"
+  },
+  "author": "William Goodall <wgoodall01@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cross-env": "^5.0.0",
+    "express": "^4.15.2",
+    "httperrors": "^2.2.0",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
