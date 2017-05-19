@@ -5,11 +5,27 @@ const httpErrors = require("httperrors");
 const fs = require("fs");
 const path = require("path");
 
+const gcloudDatastore = require("@google-cloud/datastore");
+const gcloudTrace = require("@google-cloud/trace-agent");
+const gcloudDebug = require("@google-cloud/debug-agent");
+
 // Some configuration stuff
 global.DEV = process.env.NODE_ENV !== "production";
 const PORT = parseInt(process.env.PORT) || 8080;
 const SPA_ROOT = path.resolve("./client/build");
 
+// Stackdriver agents for prod
+if(!DEV){
+	const traceAgent = gcloudTrace.start();
+	const debugAgent = gcloudDebug.start({ allowExpressions: true });
+}
+
+// Connect to Datastore
+const db = gcloudDatastore({
+	projectId: process.env.DATASTORE_PROJECT_ID
+});
+
+// Setup Express app
 const app = express();
 
 // Make sure it can find the SPA
@@ -22,7 +38,7 @@ if(!DEV && indexPath){
 
 // Serve API
 const api = require("./api.js");
-app.use("/api", api);
+app.use("/api", api(db));
 
 // Serve SPA files
 app.use(express.static(SPA_ROOT));
