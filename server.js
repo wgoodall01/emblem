@@ -36,6 +36,9 @@ if(!DEV && indexPath){
 	process.exit(1);
 }
 
+// Parse body JSON
+app.use(bodyParser.json())
+
 // Serve API
 const api = require("./api.js");
 app.use("/api", api(db));
