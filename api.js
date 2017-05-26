@@ -3,29 +3,67 @@ const httpErrors = require("httperrors");
 const crypto = require("crypto");
 const cryptoUtils = require("./lib/cryptoUtils.js");
 
-const isHex = /^[0-9a-f]+$/i;
-const isPem = /^-----BEGIN RSA (PUBLIC|PRIVATE) KEY-----[A-z0-9/+\n]*-----END RSA (PUBLIC|PRVATE) KEY-----\n?$/;
+
 
 module.exports = (db) => {
 	// DB is a connected instance of @google-cloud/datastore.
 
 	const api = new express.Router();
 	
+	const isHex = /^[0-9a-f]+$/i;
+	const isPem = /^-----BEGIN RSA (PUBLIC|PRIVATE) KEY-----[A-z0-9/+\n]*-----END RSA (PUBLIC|PRVATE) KEY-----\n?$/;
+
+	/**
+	 * Takes post as db Entity, and processes it for the client.
+	 *
+	 * If fetchUserInfo is passed, it will fetch the username/other info
+	 * and put it under the `user` key. This makes the function async --
+	 * it will return a Promise instead of the value.
+	 *
+	 * @param Object post The post to process
+	 * @param Boolean fetchUserInfo Fetch user info or not.
+	 * @returns Promise the processed post.
+	 */
+	const processPost = (post, fetchUserInfo=false) => {
+		const {signature, pubkey, content, timestamp} = post;
+		let p = {signature, pubkey, content, timestamp};
+		p.hash = post[db.KEY].name;
+		p.fingerprint = cryptoUtils.hash(pubkey);
+
+		if(fetchUserInfo){
+			return db.get(db.key(["User", p.fingerprint]))
+				.then(result => result[0])
+				.then(result => {
+					if(typeof result !== "undefined"){
+						p.username = result.username;
+						p.bio = result.bio;
+					}
+					return p
+				})
+		}else{
+			return Promise.resolve(p);
+		}
+	}
+	
 	/**
 	 * Gets a post.
 	 *
 	 * res: {author, content, timestamp, signature, pubkey}
+	 * Can return: 200, 404.
 	 */
-	api.get("/post/:hash", (req, res)=>{
+	api.get("/post/:hash", (req, res, next)=>{
 		//TODO validate passed hash
 		const {hash} = req.params;
-		console.log(hash)
 		db.get(db.key(["Post", hash]))
 			.then(result => {
-				const {content, timestamp, signature, pubkey} = result[0];
-				res.json({content, timestamp, signature, pubkey});
+				if(typeof result[0] === "undefined"){
+					res.status(404).json({});
+				}else{
+					processPost(result[0], true)
+						.then(post => res.json(post))
+				}
 			})
-			.catch(err => next(httpErrors[500]()))
+			.catch(err => next(httpErrors[500](err)))
 	})
 	
 	/**
@@ -81,18 +119,8 @@ module.exports = (db) => {
 		
 		db.save({key, data:post})
 			.then(result => res.status(200).json({id:hash, fingerprint}))
-			.catch(err => next(httpErrors[500]()))
+			.catch(err => next(httpErrors[500](err)))
 	});
-
-	/**
-	 * Get a user's feed.
-	 *
-	 * Query params: 
-	 * &after=<<timestamp>> Limit posts.
-	 *
-	 * { posts:<<array, newest first>>, last: <<unix timestamp>> }
-	 */
-	api.get("/feed/:fingerprint")
 
 	/**
 	 * Get the feed of all users.
@@ -103,7 +131,7 @@ module.exports = (db) => {
 	 *
 	 * {posts:<<array, newest first>> last:<<unix timestamp>>}
 	 */
-	api.get("/feed", (req, res)=> {
+	api.get("/feed", (req, res, next)=> {
 		const queryBefore = typeof req.query.before === "undefined"?
 			new Date() // current time
 			: new Date(req.query.before) 
@@ -117,15 +145,12 @@ module.exports = (db) => {
 			.limit(100)
 
 		db.runQuery(query)
+			.then(results => Promise.all(results[0].map(p => processPost(p, true))))
 			.then(results => res.json({
-				posts: results[0].map(e => {
-					const {signature, pubkey, content, timestamp} = e;
-					const hash = e[db.KEY].name;
-					return {signature, hash, pubkey, content, timestamp};
-				}),
-				last: results[0][results[0].length-1].timestamp
+				posts: results,
+				last: results[results.length-1].timestamp
 			}))
-			.catch(err => next(httpErrors[500]))
+			.catch(err => next(httpErrors[500](err)))
 	})
 
 	/** 
@@ -191,13 +216,14 @@ module.exports = (db) => {
 	 * response if not   : 404
 	 */
 	api.get("/user/:id", (req, res, next) => {
+		// Get date from query
 		const queryBefore = typeof req.query.before === "undefined"?
 			new Date() // current time
 			: new Date(req.query.before) 
-
 		if(isNaN(queryBefore))
 			{return next(httpErrors[400]("Invalid date in &after."))}
-
+		
+		// Query identifier
 		const id = req.params.id;
 		const isFingerprint = 
 			typeof id !== "undefined"
@@ -206,22 +232,32 @@ module.exports = (db) => {
 		const isUsername = 
 			typeof id !== "undefined"
 			&& id.length < 64;
-
 		if(!isUsername && !isFingerprint)
 			{return next(httpErrors[400]("Invaild user identifier."))}
 		
-		(()=>{
-			// Find the user
+		// Get the user key from Datastore.
+		const getUserByIdentifier = (id, isFingerprint) => {
 			if(isFingerprint){
 				return Promise.resolve(db.key(["User", id]))
 			}else if(isUsername){
 				const query = db.createQuery("User")
-					.filter("username", id);
+					.filter("username", id)
+					.limit(1);
 				return db.runQuery(query)
-					.then(res => console.dir(res))
+					.then(result => {
+						if(result[0].length === 0){
+							return Promise.reject(httpErrors[404]("User not found."))
+						}else{
+							return Promise.resolve(result[0][0][db.KEY]);
+						}
+					})
 			}
-		})().then(userKey => {
-			const userReq = db.get(userKey);
+		}
+		
+		// Get the user data from Datastore
+		const getUserData = (userKey) => {
+			const userReq = db.get(userKey)
+				.then(result => result[0]);
 
 			const postsQuery = db.createQuery("Post")
 				.hasAncestor(userKey)
@@ -229,41 +265,28 @@ module.exports = (db) => {
 				.order("timestamp", "desc")
 				.limit(50);
 			const postsReq = db.runQuery(postsQuery)
+				.then(result => Promise.all(result[0].map(processPost)))
 
 			return Promise.all([userReq, postsReq]);
-		}).then(response => {
-			const [userRes, postsRes] = response;
-			const user = userRes[0];
-			const posts = postsRes[0];
-			res.json({
-				user:user || {}, 
-				posts
-			});
-		})
-
-		// else{
-		// 	// weird and funky.
-		// 	return next(httpErrors[400]("Invalid user identifier."))
-		// }
-
+		}
+		
+		getUserByIdentifier(id, isFingerprint)
+			.then(getUserData)
+			.then(response => {
+				res.json({
+					user: response[0] || {}, 
+					posts: response[1]
+				});
+			})
+			.catch(err => {
+				if(err.HttpError){
+					next(err);
+				}else{
+					next(httpErrors[500](err))
+				}
+			})
 	});
 	
-	/**
-	 * Deal with following/unfollowing users.
-	 *
-	 * request:{username, signature:sign(username) action:{"add"||"remove"}}
-	 */
-	api.post("/follow");
-
-	/**
-	 * List the users this person follows.
-	 * 
-	 * &user=<<fingerprint>>
-	 *
-	 */
-	api.get("/follow"); // List following
-
-
 
 	// 404 error for the API
 	api.use((req, res, next)=>{
