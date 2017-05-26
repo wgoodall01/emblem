@@ -5,15 +5,21 @@
   "dependencies": {
     "cross-env": "^5.0.0",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-helmet": "^5.1.3",
+    "react-redux": "^5.0.5",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
   },
+  "proxy": "http://localhost:8080/",
   "scripts": {
     "start": "cross-env NODE_PATH=src:../lib react-scripts start",
     "build": "cross-env NODE_PATH=src:../lib react-scripts build",
-    "test":  "cross-env NODE_PATH=src:../lib react-scripts test --env=jsdom",
+    "test": "cross-env NODE_PATH=src:../lib react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
 }

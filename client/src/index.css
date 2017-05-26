@@ -1,5 +1,27 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+body{
+	margin:0;
+	padding:0;
+
+	background-color:var(--color-white);
+	color:var(--color-dark);
+	font-family:"Helvetica", "Arial", sans-serif;
+
+	overflow-x:hidden;
+}
+
+/* Color variables */
+:root{
+	--color-white: #fdfdfd;
+	--color-dark: #333333;
+	--color-primary: #3a79d9;
+	--color-error: #bc0001;
+}
+
+/* Global styles, make some stuff look better */
+h1 {
+	font-weight:200;
+}
+
+p{
+	font-weight:300;
 }
