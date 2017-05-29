@@ -11,9 +11,9 @@ body{
 
 /* Color variables */
 :root{
-	--color-white: #fdfdfd;
-	--color-dark: #333333;
-	--color-primary: #3a79d9;
+	--color-white: rgb(250, 250, 250);
+	--color-dark: rgb(50,50,50);
+	--color-primary: #1c6aef;
 	--color-error: #bc0001;
 }
 
