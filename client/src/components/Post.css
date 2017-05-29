@@ -21,3 +21,32 @@
 	font-size:18px;
 }
 
+.Post_editable{
+	font-family: inherit;
+	width:100%;
+	padding:10px;
+	height:200px;
+	border:none;
+	font-size:16px;
+	resize:none;
+	box-shadow: inset 0px 0px 8px -3px rgba(0,0,0,0.75);
+	line-height:20px;
+	box-sizing:border-box;
+}
+
+.Post_button-container{
+	display:flex;
+	flex-direction:row-reverse;
+}
+
+.Post_submit-button{
+	padding:10px;
+	margin-top:5px;
+	display:inline-block;
+	width:100px;
+	background-color: var(--color-primary);
+	color: var(--color-white);
+	border:none;
+	border-radius:5px;
+	font-size:20px;
+}
