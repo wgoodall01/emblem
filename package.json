@@ -12,7 +12,8 @@
     "db.dev": "gcloud beta emulators datastore start --data-dir __data --host-port localhost:8079 --project wgoodall01-emblem",
     "server.dev": "$(gcloud beta emulators datastore env-init --data-dir __data --project wgoodall01-emblem) && NODE_ENV=development PORT=8080 nodemon --inspect server.js",
     "repl": "$(gcloud beta emulators datastore env-init --data-dir __data --project wgoodall01-emblem) && NODE_ENV=development node",
-    "client.dev": "cd client && yarn start --silent"
+    "client.dev": "cd client && yarn start --silent",
+	"install":"cd client && yarn"
   },
   "author": "William Goodall <wgoodall01@gmail.com>",
   "license": "MIT",
