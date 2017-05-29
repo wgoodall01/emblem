@@ -18,7 +18,6 @@ const NotFound = (props) => <div>
 </div>
 
 const App = (props) => {
-	const sep = <span className="App_nav-sep"/>
 	return <div>
 		<Helmet defaultTitle="Emblem" titleTemplate="%s - Emblem">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
