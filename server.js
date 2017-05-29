@@ -28,6 +28,12 @@ const db = gcloudDatastore({
 // Setup Express app
 const app = express();
 
+if(DEV){
+	app.use(morgan("dev"));
+}else{
+	app.use(morgan("combined"));
+}
+
 // Make sure it can find the SPA
 const indexPath = path.resolve(SPA_ROOT, "index.html");
 if(!DEV && indexPath){

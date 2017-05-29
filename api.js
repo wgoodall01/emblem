@@ -83,7 +83,7 @@ module.exports = (db) => {
 			"pubkey",
 			"hash",
 		].filter(k => !(k in body)).length > 0){
-			next(httpErrors[400]("Doesn't have all required fields"));
+			return next(httpErrors[400]("Doesn't have all required fields"));
 		}
 		
 		// Validate pem
@@ -173,7 +173,7 @@ module.exports = (db) => {
 			"pubkey",
 			"signature",
 		].filter(k => !(k in body)).length > 0){
-			next(httpErrors[400]("Doesn't have all required fields"));
+			return next(httpErrors[400]("Doesn't have all required fields"));
 		}
 
 		// Validate pem
