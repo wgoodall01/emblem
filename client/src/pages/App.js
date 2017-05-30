@@ -6,9 +6,8 @@ import "./App.css";
 import classnames from "classnames";
 
 import FeedPage from "pages/Feed";
-import UserPage from "pages/User";
+import {UserPage, MePage} from "pages/UserPage";
 import ComposePage from "pages/Compose";
-import MePage from "pages/Me";
 import AboutPage from "pages/About";
 
 

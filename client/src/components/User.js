@@ -6,14 +6,14 @@ import {loadUser} from "actions.js";
 class User extends React.PureComponent{
 	constructor(props){
 		super(props);
-		props.loadUser(props.match.params.id);
+		props.loadUser(props.fingerprint);
 	}
 
 	render(){
 		if(this.props.user.isLoading){return <div>Loading...</div>}
 		return (<div>
 			<h1>{this.props.user.username || this.props.user.fingerprint.substring(0, 12)}</h1>
-			<pre>{JSON.stringify(this.props.user, null, 3)}</pre>
+			<p>{this.props.user.bio || "Hi!"}</p>
 			{this.props.posts.map(p => <Post
 				name={this.props.user.username || this.props.user.fingerprint.substring(0, 12)}
 				timestamp={new Date(p.timestamp).toString()}
@@ -27,7 +27,7 @@ class User extends React.PureComponent{
 
 
 const mapStateToProps = (state, ownProps) => {
-	const user = state.users[ownProps.match.params.id];
+	const user = state.users[ownProps.fingerprint];
 	if(!user){return {user:{isLoading:true}, posts:[]}}
 	const posts = (user.posts || []).map(id => state.posts[id]);
 	return {user, posts};
