@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {updateDraft, submitDraft, generateCredentials} from "actions.js";
 import Button from "components/Button";
 import CredentialGenerator from "components/CredentialGenerator.js";
+import LayoutContainer from "components/LayoutContainer.js";
 import cu from "cryptoUtils.js";
 import {Redirect} from "react-router";
 
@@ -18,31 +19,27 @@ const processPost = (contents, credentials, onSubmit) => {
 	onSubmit(post);
 }
 
-const Composer = props => {
-	console.log("composer render");
-	console.dir(props.author);
-	return (
-		props.isUnknownUser?
-		<CredentialGenerator to="make a post"/>
-		: 
-		<div className="Post">
-			<div className="Post_info-container">
-				<div className="Post_author">{props.user.username || props.credentials.fingerprint.substring(0, 12)}</div>
-			</div>
-			<textarea 
-				className="Post_editable" 
-				onChange={e => props.onUpdate(e.target.value)}
-				value={props.contents}/>
-			<div className="Post_button-container">
-				<Button 
-					label="Post" 
-					onClick={e => processPost(props.contents, props.credentials, props.onSubmit)}/>
-				{props.isError?<div>{props.err}</div>:undefined}
-				{props.latestId?<Redirect to="/me"/>:undefined} 
-			</div>
+const Composer = props => (
+	props.isUnknownUser?
+	<CredentialGenerator to="make a post"/>
+	: 
+	<div className="Post">
+		<div className="Post_author Post_info-container">
+			{props.user.username || props.credentials.fingerprint.substring(0, 12)}
 		</div>
-	)
-}
+		<textarea 
+			className="Post_editable" 
+			onChange={e => props.onUpdate(e.target.value)}
+			value={props.contents}/>
+		<LayoutContainer flexDirection="row-reverse">
+			<Button 
+				label="Post" 
+				onClick={e => processPost(props.contents, props.credentials, props.onSubmit)}/>
+			{props.isError?<div>{props.err}</div>:undefined}
+			{props.latestId?<Redirect to="/me"/>:undefined} 
+		</LayoutContainer>
+	</div>
+)
 
 const mapStateToProps = state => ({
 	isUnknownUser: state.credentials.unknown,

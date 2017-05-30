@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import Post from "components/Post";
+import LoadingSpinner from "components/LoadingSpinner";
 import {loadUser} from "actions.js";
 
 class User extends React.PureComponent{
@@ -10,7 +11,7 @@ class User extends React.PureComponent{
 	}
 
 	render(){
-		if(this.props.user.isLoading){return <div>Loading...</div>}
+		if(this.props.user.isLoading){return <LoadingSpinner/>}
 		return (<div>
 			<h1>{this.props.user.username || this.props.user.fingerprint.substring(0, 12)}</h1>
 			<p>{this.props.user.bio || "Hi!"}</p>
@@ -27,10 +28,12 @@ class User extends React.PureComponent{
 
 
 const mapStateToProps = (state, ownProps) => {
-	const user = state.users[ownProps.fingerprint];
-	if(!user){return {user:{isLoading:true}, posts:[]}}
-	const posts = (user.posts || []).map(id => state.posts[id]);
-	return {user, posts};
+	let isMe = ownProps.fingerprint === state.credentials.fingerprint;
+	let user = state.users[ownProps.fingerprint];
+	if(!user){user={isLoading:true};}
+	let posts = (user.posts || []).map(id => state.posts[id]);
+
+	return {isMe, user, posts};
 }
 
 const mapDispatchToProps = ({

@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import Post from "components/Post.js";
+import LoadingSpinner from "components/LoadingSpinner";
 import {loadFeed} from "actions.js";
 
 class Feed extends React.PureComponent{
@@ -12,7 +13,7 @@ class Feed extends React.PureComponent{
 	render(){
 		return (<div>
 			<h1>Feed</h1>
-			{this.props.isLoading?<div>Loading...</div>:undefined}
+			{this.props.isLoading?<LoadingSpinner/>:undefined}
 			{this.props.isError?
 					<div>Error: {this.props.err.toString()}</div>
 					:

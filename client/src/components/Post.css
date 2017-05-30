@@ -7,9 +7,6 @@
 
 .Post_info-container{
 	margin-bottom:10px;
-	display:flex;
-	justify-content:space-between;
-	align-items:center;
 }
 
 .Post_timestamp{
@@ -33,13 +30,6 @@
 	border-radius:3px;
 	line-height:20px;
 	box-sizing:border-box;
-}
-
-.Post_button-container{
-	display:flex;
-	flex-direction:row-reverse;
-	align-items:center;
-	justify-content:space-between;
 }
 
 .Post_submit-button{
