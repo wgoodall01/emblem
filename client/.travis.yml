@@ -1,0 +1,33 @@
+sudo: false
+language: node_js
+node_js:
+- '7'
+
+before_install:
+- gcloud version || true
+- if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export
+      CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+- source /home/travis/google-cloud-sdk/path.bash.inc
+- gcloud version
+- gcloud config set project stem-tetris
+- gcloud auth activate-service-account --key-file client-secret.json
+- gcloud debug source gen-repo-info-file
+
+script:
+- yarn run client.build
+
+deploy:
+  provider: gae
+  skip_cleanup: true
+  keyfile: client-secret.json
+  project: stem-tetris
+  on: master
+
+cache:
+  directories:
+  - $HOME/google-cloud-sdk/
+  - $HOME/.yarn-cache/
+
+env:
+  global:
+    secure: QsNbejRLDbolvB7wj+owOcvux9LhEmlbfO6r0Jlyfd5i150w0dXE035SGnkkq/o3LdTCgpoxwr8/L4uZv4K8nBuyzxusJCdR7Gn4ndWBBpNggT/yqyLs22p1gdcfcny8oWREQTtX4kiOTIxJb63mI9pV5D3TZQLYQg1ROBMuYRJ+KdQezL+DJ99EnCY6gOleQ+vvn80K6T6y/UFMzLGdQ4x/Z38y0TMgn0HL3LqRbYiW2uJ1G8t5rndcCbKm9vHh0B7mpHDxy8OhgjY4kmBY24WFj0rywuqxGxTUNgT/j6n04Y6aHOpLRAJopnE0rwYgyNLGYSaX02YehJy2SrMCDdxEVA1dS4JmakCXlK1Chsk+D5U4WTUFM2MdaDR9wqfQl9eefdGuY6CZLSBGYepzXF9gphCQY5+UYCOr5Qf9m0EeIn6XGJgDhFFliSqMsAO6bhSXnC9zkfXFACQGNUo/t3svc5C9/w/m4fXawUaxBwKcYHL8gP8onm8Ilz/byhrgonmO01umkezH8ZQZoPIyrsfODJD2emr10dCdqGwA5Knohy9pJFQibqMQMycRq0OX5hUycqKEcIvYj+r0fsHfRkZRakgq+TTHIRRltMkWEpYJR8o2frLJfXPFOoCHPbTHuLJgg18cJvj3bQ5E+15WVMS3gCECnUYN5gDGM7goEfM=
