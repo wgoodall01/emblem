@@ -38,8 +38,10 @@ if(DEV){
 const indexPath = path.resolve(SPA_ROOT, "index.html");
 if(!DEV && indexPath){
 	console.log(`SPA index at: ${indexPath}`)
-	console.error("Can't find SPA static files. Exiting.");
-	process.exit(1);
+	if(!fs.existsSync(indexPath)){
+		console.error("Can't find SPA static files. Exiting.");
+		process.exit(1);
+	}
 }
 
 // Parse body JSON

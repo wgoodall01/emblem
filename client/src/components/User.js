@@ -22,7 +22,7 @@ class User extends React.PureComponent{
 			<h1>{this.props.user.username || this.props.user.fingerprint.substring(0, 12)}</h1>
 			<p>{this.props.user.bio || "Hi!"}</p>
 			{this.props.isMe?<Compose/>:undefined}
-			{this.props.posts.map(p => <Post post={p}/>)}
+			{this.props.posts.map(p => <Post key={p.hash} post={p}/>)}
 		</div>)
 	}
 }

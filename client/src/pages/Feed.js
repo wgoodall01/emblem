@@ -17,7 +17,7 @@ class Feed extends React.PureComponent{
 			{this.props.isError?
 					<div>Error: {this.props.err.toString()}</div>
 					:
-				this.props.posts.map(p => <Post post={p}/>)
+				this.props.posts.map(p => <Post key={p.hash} post={p}/>)
 			}
 		</div>)
 	}
