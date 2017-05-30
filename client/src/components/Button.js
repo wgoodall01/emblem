@@ -7,7 +7,8 @@ const Button = (props) => (
 		className={classnames({
 			"Button":true, 
 			"Button_inverse":props.inverse, 
-			"Button_regular":!props.inverse})}
+			"Button_outline":props.outline,
+		})}
 		onClick={e => props.onClick(e)}
 	>
 		{props.label}
