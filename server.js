@@ -7,6 +7,8 @@ const SPA_ROOT = path.resolve("./client/build");
 
 // Stackdriver agents for prod
 if(!DEV){
+	const gcloudTrace = require("@google-cloud/trace-agent");
+	const gcloudDebug = require("@google-cloud/debug-agent");
 	const traceAgent = gcloudTrace.start();
 	const debugAgent = gcloudDebug.start({ allowExpressions: true });
 }
@@ -18,8 +20,6 @@ const httpErrors = require("httperrors");
 const fs = require("fs");
 
 const gcloudDatastore = require("@google-cloud/datastore");
-const gcloudTrace = require("@google-cloud/trace-agent");
-const gcloudDebug = require("@google-cloud/debug-agent");
 
 
 // Connect to Datastore
