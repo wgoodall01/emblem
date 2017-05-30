@@ -1,13 +1,4 @@
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const httpErrors = require("httperrors");
-const fs = require("fs");
 const path = require("path");
-
-const gcloudDatastore = require("@google-cloud/datastore");
-const gcloudTrace = require("@google-cloud/trace-agent");
-const gcloudDebug = require("@google-cloud/debug-agent");
 
 // Some configuration stuff
 global.DEV = process.env.NODE_ENV !== "production";
@@ -19,6 +10,17 @@ if(!DEV){
 	const traceAgent = gcloudTrace.start();
 	const debugAgent = gcloudDebug.start({ allowExpressions: true });
 }
+
+const morgan = require("morgan");
+const express = require("express");
+const bodyParser = require("body-parser");
+const httpErrors = require("httperrors");
+const fs = require("fs");
+
+const gcloudDatastore = require("@google-cloud/datastore");
+const gcloudTrace = require("@google-cloud/trace-agent");
+const gcloudDebug = require("@google-cloud/debug-agent");
+
 
 // Connect to Datastore
 const db = gcloudDatastore({
