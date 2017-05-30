@@ -6,4 +6,5 @@ const Compose = (props) => (<div>
 	<Composer/>
 </div>)
 
+
 export default Compose;

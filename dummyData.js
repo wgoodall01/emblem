@@ -35,15 +35,15 @@ const mkUser = (name) => {
 	}
 }
 
-const mkPost = (user, content) => {
+const mkPost = (user, contents) => {
 	mkUser(user);
 
 	const kp = userKeys[user];
-	const hash = cu.hashList([kp.public, content]);
+	const hash = cu.hashList([kp.public, contents]);
 	const signature = cu.sign(hash, kp.private);
 
-	log(`Post: "${content}" -- ${user}`);
-	return {content, pubkey:kp.public, hash, signature};
+	log(`Post: "${contents}" -- ${user}`);
+	return {contents, pubkey:kp.public, hash, signature};
 }
 
 let [users, userKeys, postList] = [null, null, null];
@@ -71,7 +71,6 @@ if(fs.existsSync(DATA_CACHE)){
 
 
 
-
 // Run the data through the app
 const submitPost = (post) => rp({uri:`${URI}/post`, method:"POST", body:post, json:true})
 const registerUser = (user) => rp({uri:`${URI}/register`, method:"POST", body:user, json:true})
@@ -93,5 +92,4 @@ allReqs.then(response => {
 
 allReqs.catch(err => {
 	log("Submit: Failure!");
-	log(`${err.statusCode}: ${err.error}`)
-})
+	log(`${err.statusCode}: ${JSON.stringify(err.error)}`) })

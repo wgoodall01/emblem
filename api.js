@@ -25,8 +25,8 @@ module.exports = (db) => {
 	 * @returns Promise the processed post.
 	 */
 	const processPost = (post, fetchUserInfo=false) => {
-		const {signature, pubkey, content, timestamp} = post;
-		let p = {signature, pubkey, content, timestamp};
+		const {signature, pubkey, contents, timestamp} = post;
+		let p = {signature, pubkey, contents, timestamp};
 		p.hash = post[db.KEY].name;
 		p.fingerprint = cryptoUtils.hash(pubkey);
 
@@ -48,7 +48,7 @@ module.exports = (db) => {
 	/**
 	 * Gets a post.
 	 *
-	 * res: {author, content, timestamp, signature, pubkey}
+	 * res: {author, contents, timestamp, signature, pubkey}
 	 * Can return: 200, 404.
 	 */
 	api.get("/post/:hash", (req, res, next)=>{
@@ -69,16 +69,16 @@ module.exports = (db) => {
 	/**
 	 * Make a post.
 	 *
-	 * Post hashes are sha256(fingerprint+content);
+	 * Post hashes are sha256(fingerprint+contents);
 	 *
-	 * req: {content, signature:sign(hash), hash:hashlist(pubkey,content), pubkey}
+	 * req: {contents, signature:sign(hash), hash:hashlist(pubkey,contents), pubkey}
 	 * res: {id:<<post hash>>}
 	 */
 	api.post("/post", (req, res, next)=>{
 		// Verify request
 		const body = req.body;
 		if([
-			"content",
+			"contents",
 			"signature",
 			"pubkey",
 			"hash",
@@ -95,13 +95,14 @@ module.exports = (db) => {
 			{return next(httpErrors[400]("Signature - Invalid hex"))}
 		
 		// Calculate post hash
-		const hash = cryptoUtils.hashList([body.pubkey, body.content.toString()]);
+		const hash = cryptoUtils.hashList([body.pubkey, body.contents.toString()]);
 		if(hash !== body.hash){return next(httpErrors[400]("Incorrect post hash."))}
 
 		// Check the signature
 		const valid = cryptoUtils.verify(hash, body.signature, body.pubkey);
 		if(!valid){return next(httpErrors[400](
-			"Signature must be valid sign(sha256(pubkey+content))"))}
+			"Signature must be valid sign(hashList(pubkey,contents))"))}
+		
 
 		// Calculate the fingerprint for user identification.
 		const fingerprint = cryptoUtils.hash(body.pubkey);
@@ -111,7 +112,7 @@ module.exports = (db) => {
 			"Post", hash         // Post entity, keyed off post hash.
 		]);
 		let post = {
-			content: body.content.toString(),
+			contents: body.contents.toString(),
 			signature: body.signature.toString(),
 			pubkey: body.pubkey.toString(),
 			timestamp: new Date(),

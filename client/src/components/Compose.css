@@ -1,0 +1,7 @@
+.Compose_cred-generator{
+	background-color:var(--color-primary);
+	color:var(--color-white);
+	border-radius:5px;
+	font-size:20px;
+	padding:50px;
+}

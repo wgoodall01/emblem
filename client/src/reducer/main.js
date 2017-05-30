@@ -6,6 +6,7 @@
 
 // Sort function to sort posts by their timestamps.
 // [...].sort(postDateComparator(state))
+
 const postDateComparator = (state) => (postA, postB) => {
 	const a = new Date(state.posts[postA].timestamp);
 	const b = new Date(state.posts[postB].timestamp);
@@ -18,7 +19,8 @@ const emptyState = {
 	posts:{}, // <hash>:<post>
 	feed:{
 		posts:[], // [<hash>]
-		isLoading:true, isError:false, errorMsg:"",
+		isLoading:false, isError:false, err:"",
+		isEmpty:true
 	},
 	users:{} // <fingerprint>:<user>
 	/* "<fingerprint>":{
@@ -28,13 +30,44 @@ const emptyState = {
 	 * } */
 }
 
-const rootReducer = (state=emptyState, action={}) => {
+const mainReducer = (state=emptyState, action={}) => {
 	const newState = {...state};
+	let user;
 	switch(action.type){
+		case "SET_FEED_LOADING":
+			newState.feed = {...newState.feed};
+			newState.feed.isLoading= true;
+			return newState;
+
+		case "FEED_LOAD_RESULT":
+			newState.feed = {...newState.feed};
+			newState.feed.isLoading=false;
+			newState.feed.isError=false;
+			if(action.isError){
+				newState.feed.isError = true;
+				newState.feed.err = action.err;
+			}
+			return newState;
+
+		case "SET_USER_LOADING":
+			newState.users = {...newState.users};
+			user = Object.assign({}, newState.users[action.fingerprint], action.user);
+			user.isLoading = true;
+			return newState;
+
 		case "UPDATE_USER":
 			//{user:userObj}
+			const fingerprint = action.user.fingerprint
 			newState.users = {...newState.users};
-			newState.users[action.user.fingerprint] = action.user;
+			user = Object.assign({}, newState.users[fingerprint], action.user);
+			newState.users[fingerprint] = user;
+
+			user.isLoading=false;
+			user.isError=false;
+			if(action.isError){
+				user.isError = true;
+				user.err = action.err;
+			}
 			return newState;
 
 		case "UPDATE_FEED":
@@ -73,49 +106,9 @@ const rootReducer = (state=emptyState, action={}) => {
 			newState.posts[action.post.hash] = action.post;
 			return newState;
 
-		default: return newState;
+		default: return state;
 	}
 }
 
 
-export default rootReducer;
-
-/*
-const rootReducer = combineReducers({
-	posts:postsReducer,
-	feed:feedReducer,
-	users:usersReducer,
-})
-
-const postsReducer = (state={}, action) => {
-	switch(action.type){
-		case "ADD_POST":
-			const newPosts = Object.assign({}, state);
-			newPosts[action.post.hash] = action.post;
-			return newPosts;
-		default:
-			return state;
-	}
-}
-
-const feedReducer = (state=[], action) => {
-	switch(action.type){
-		case "UPDATE_FEED":
-			// Include the new items in the sorted feed.
-			const merged = [...action.feed, ...state].sort(postDateComparator(state));
-		default:
-			return state;
-	}
-}
-
-const usersReducer = (state={}, action) => {
-	switch(action.type){
-		case "UPDATE_USER":
-			const newUsers = Object.assign({}, state);
-			newUsers[action.fingerprint] = action.user;
-			return newUsers;
-		default:
-			return state;
-	}
-}
-*/
+export default mainReducer;

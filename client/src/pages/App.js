@@ -30,7 +30,7 @@ const App = (props) => {
 					<nav className="App_nav-links-container">
 						{[
 							["/about",      "About"],
-							["/",           "Explore"],
+							["/",           "Feed"],
 							["/me",         "Me"],
 							["/compose",    "Compose", "App_nav-link-button"],
 						].map((e, i, arr) => (
@@ -48,7 +48,6 @@ const App = (props) => {
 				</div>
 			</div>
 		</div>
-		
 		<div className="App_container">
 			<Switch>
 				<Route exact path="/" component={FeedPage}/>
@@ -62,4 +61,4 @@ const App = (props) => {
 	</div>
 }
 
-export default App
+export default App;
