@@ -17,13 +17,7 @@ class Feed extends React.PureComponent{
 			{this.props.isError?
 					<div>Error: {this.props.err.toString()}</div>
 					:
-				this.props.posts.map(p => <Post 
-					name={p.username || p.fingerprint.substring(0, 12)} 
-					fingerprint={p.fingerprint}
-					timestamp={new Date(p.timestamp).toString()}
-					contents={p.contents}
-					key={p.hash}
-				/>)
+				this.props.posts.map(p => <Post post={p}/>)
 			}
 		</div>)
 	}

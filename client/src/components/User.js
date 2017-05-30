@@ -22,13 +22,7 @@ class User extends React.PureComponent{
 			<h1>{this.props.user.username || this.props.user.fingerprint.substring(0, 12)}</h1>
 			<p>{this.props.user.bio || "Hi!"}</p>
 			{this.props.isMe?<Compose/>:undefined}
-			{this.props.posts.map(p => <Post
-				name={this.props.user.username || this.props.user.fingerprint.substring(0, 12)}
-				timestamp={new Date(p.timestamp).toString()}
-				fingerprint={p.fingerprint}
-				contents={p.contents}
-				key={p.hash}
-			/>)}
+			{this.props.posts.map(p => <Post post={p}/>)}
 		</div>)
 	}
 }

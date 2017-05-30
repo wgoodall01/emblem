@@ -1,3 +1,5 @@
+const cu = require("cryptoUtils.js");
+
 // Possible actions
 // 
 // ADD_POST
@@ -104,6 +106,12 @@ const mainReducer = (state=emptyState, action={}) => {
 			//{post:postObj}
 			newState.posts = {...newState.posts};
 			newState.posts[action.post.hash] = action.post;
+			var post = newState.posts[action.post.hash];
+
+			// Verify the post.
+			post.hash = cu.hashList([post.pubkey, post.contents]);
+			post.isValid = cu.verify(post.hash, post.signature, post.pubkey);
+			
 			return newState;
 
 		default: return state;
