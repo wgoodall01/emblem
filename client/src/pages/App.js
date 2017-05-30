@@ -7,7 +7,6 @@ import classnames from "classnames";
 
 import FeedPage from "pages/Feed";
 import {UserPage, MePage} from "pages/UserPage";
-import ComposePage from "pages/Compose";
 import AboutPage from "pages/About";
 
 
@@ -30,8 +29,7 @@ const App = (props) => {
 						{[
 							["/about",      "About"],
 							["/",           "Feed"],
-							["/me",         "Me"],
-							["/compose",    "Compose", "App_nav-link-button"],
+							["/me",         "Me",   "App_nav-link-button"],
 						].map((e, i, arr) => (
 							<span key={i}>
 								<NavLink 
@@ -52,7 +50,6 @@ const App = (props) => {
 				<Route exact path="/" component={FeedPage}/>
 				<Route path="/user/:id" component={UserPage}/>
 				<Route path="/me" component={MePage}/>
-				<Route path="/compose" component={ComposePage}/>
 				<Route path="/about" component={AboutPage}/>
 				<Route path="*" component={NotFound}/>
 			</Switch>

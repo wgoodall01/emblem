@@ -4,6 +4,7 @@ import "./Compose.css";
 import {connect} from "react-redux";
 import {updateDraft, submitDraft, generateCredentials} from "actions.js";
 import Button from "components/Button";
+import LoadingSpinner from "components/LoadingSpinner";
 import CredentialGenerator from "components/CredentialGenerator.js";
 import LayoutContainer from "components/LayoutContainer.js";
 import cu from "cryptoUtils.js";
@@ -35,6 +36,7 @@ const Composer = props => (
 			<Button 
 				label="Post" 
 				onClick={e => processPost(props.contents, props.credentials, props.onSubmit)}/>
+			{props.isLoading?<LoadingSpinner size="20"/>:undefined}
 			{props.isError?<div>{props.err}</div>:undefined}
 			{props.latestId?<Redirect to="/me"/>:undefined} 
 		</LayoutContainer>

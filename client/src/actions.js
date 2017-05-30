@@ -2,7 +2,6 @@ const cu = require("cryptoUtils.js");
 
 /**
  * Redux action to add a post to the store.
- *
  * @param post Object the post object to add.
  */
 export function addPost(post){
@@ -102,7 +101,8 @@ export function updateDraft(text){
  * @param post Object the post object, with signatures computed.
  */
 export function submitDraft(post){
-	return dispatch => {
+	return (dispatch, getState) => {
+		dispatch({type:"DRAFT_SEND"});
 		fetch("/api/post", {
 			method:"POST", 
 			body:JSON.stringify(post),
@@ -113,15 +113,15 @@ export function submitDraft(post){
 		})
 			.then(response => response.json())
 			.then(json => {
-				console.log("success submitting");
-				console.dir(json);
+				// Add it to local state
+				dispatch(updateFeed(getState().credentials.fingerprint, [json]))
 				dispatch({
 					type:"RECEIVE_DRAFT_RESPONSE",
-					latestId:json.id,
+					latestId:json.hash,
 				})
 			})
 			.catch(err => {
-				console.log("error submitting");
+				console.log(err);
 				dispatch({
 					type:"RECEIVE_DRAFT_RESPONSE",
 					isError: true,

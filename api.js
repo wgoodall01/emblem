@@ -119,7 +119,7 @@ module.exports = (db) => {
 		}
 		
 		db.save({key, data:post})
-			.then(result => res.status(200).json({id:hash, fingerprint}))
+			.then(result => res.status(200).json(Object.assign({fingerprint, hash}, post)))
 			.catch(err => next(httpErrors[500](err)))
 	});
 

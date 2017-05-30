@@ -7,9 +7,9 @@ const LoadingSpinner = (props) => (
 			alt="Loading..." 
 			src={spinnerUrl}
 			style={{
-				width:"40px",
-				height:"40px",
-				margin:"20px"
+				width:`${props.size || 40}px`,
+				height:`${props.size || 40}px`,
+				margin:`${props.margin || 20}px`,
 			}}
 		/>
 	</div>

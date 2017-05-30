@@ -20,6 +20,10 @@ const composeReducer = (state, action) => {
 		case "CLEAR_DRAFT":
 			newCompose.contents = "";
 			return {...state, compose:newCompose};
+		
+		case "DRAFT_SEND":
+			newCompose.isLoading = true;
+			return {...state, compose:newCompose};
 
 		case "RECEIVE_DRAFT_RESPONSE":
 			newCompose.latestId = undefined;
