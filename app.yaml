@@ -15,16 +15,3 @@ automatic_scaling:
 env_variables:
     NODE_ENV: 'production'
 
-indexes:
-    - kind: Post
-      ancestor: yes
-      properties:
-      - name: timestamp
-
-    - kind: User
-      properties:
-      - name: username
-
-    - kind: Post
-      properties:
-      - name: timestamp
