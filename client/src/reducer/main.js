@@ -66,6 +66,8 @@ const mainReducer = (state=emptyState, action={}) => {
 
 			user.isLoading=false;
 			user.isError=false;
+			user.username = action.user.username;
+			user.bio = action.user.bio;
 			if(action.isError){
 				user.isError = true;
 				user.err = action.err;

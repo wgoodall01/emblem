@@ -3,7 +3,9 @@ import {connect} from "react-redux";
 import Post from "components/Post";
 import Compose from "components/Compose.js"
 import LoadingSpinner from "components/LoadingSpinner";
-import {loadUser} from "actions.js";
+import "./User.css";
+import {loadUser, updateUser, submitUser} from "actions.js";
+import cu from "cryptoUtils.js";
 
 class User extends React.PureComponent{
 	constructor(props){
@@ -15,12 +17,58 @@ class User extends React.PureComponent{
 		this.props.loadUser(this.props.fingerprint);
 	}
 
+	onChange(e){
+		const newUser = {...this.props.user};
+		newUser[e.target.name] = e.target.value;
+		this.props.updateUser(newUser);
+	}
+
+	sendChanges(e){
+		const newUser = {...this.props.user};
+		newUser.username = newUser.username || this.props.user.fingerprint.substring(0, 12);
+		newUser.bio = newUser.bio || "Hi!";
+		newUser.pubkey = this.props.credentials.public;
+		const hash = cu.hashList([newUser.pubkey, newUser.username, newUser.bio]);
+		newUser.signature = cu.sign(hash, this.props.credentials.private);
+		this.props.submitUser(newUser);
+	}
+
 	render(){
-		if(typeof this.props.fingerprint === "undefined"){return <h1>This user does not exist.</h1>}
 		if(this.props.user.isLoading){return <LoadingSpinner/>}
+
+		const name = typeof this.props.user.username === "undefined"?
+			this.props.user.fingerprint.substring(0, 12) : this.props.user.username;
+
+		const bio = typeof this.props.user.bio === "undefined"?
+			"Hi!" : this.props.user.bio;
+
 		return (<div>
-			<h1>{this.props.user.username || this.props.user.fingerprint.substring(0, 12)}</h1>
-			<p>{this.props.user.bio || "Hi!"}</p>
+			{this.props.isMe?
+					<h1>
+						<input 
+							className="User_input" 
+							name="username" 
+							onChange={e => this.onChange(e)}
+							onBlur={e => this.sendChanges(e)}
+							value={name}
+						/>
+					</h1>
+				:<h1>{name}</h1>
+			}
+			{this.props.isMe?
+					<p>
+						<textarea 
+							className="User_input" 
+							name="bio" 
+							onChange={e => this.onChange(e)}
+							onBlur={e => this.sendChanges(e)}
+							value={bio}
+						/>
+					</p>
+				:<p>{bio}</p>
+			}
+			{this.props.isMe?
+				<div className="User_input-edit">(click username/bio to edit)</div>:undefined}
 			{this.props.isMe?<Compose/>:undefined}
 			{this.props.posts.map(p => <Post key={p.hash} post={p}/>)}
 		</div>)
@@ -34,11 +82,11 @@ const mapStateToProps = (state, ownProps) => {
 	if(!user){user={isLoading:true};}
 	let posts = (user.posts || []).map(id => state.posts[id]);
 
-	return {isMe, user, posts};
+	return {isMe, user, posts, credentials:state.credentials};
 }
 
 const mapDispatchToProps = ({
-	loadUser: loadUser
+	loadUser, updateUser, submitUser
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

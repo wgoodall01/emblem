@@ -133,6 +133,31 @@ export function submitDraft(post){
 }
 
 /**
+ * Submit a user's details.
+ * @param user Object the user object.
+ */
+export function submitUser(user){
+	return dispatch => {
+		fetch("/api/register", {
+			method:"POST", 
+			body:JSON.stringify(user),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+		})
+			.then(response => response.json())
+			.then(json => {
+				dispatch(updateUser(json));
+			})
+			.catch(err => {
+				console.log(err);
+				dispatch(updateUser(user, {isError:true, err:"Couldn't save."}))
+			})
+	}
+}
+
+/**
  * Sets the credentials of the user.
  *
  * @param kp Object .public, .private.

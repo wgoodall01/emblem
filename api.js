@@ -191,18 +191,20 @@ module.exports = (db) => {
 		if(!valid){return next(httpErrors[400]("Invalid request signature."))}
 
 		const fingerprint = cryptoUtils.hash(body.pubkey);
-		
+
+		const data = {
+			username: body.username,
+			bio: body.bio,
+			pubkey: body.pubkey,
+			signature: body.signature,
+		};
+
 		db.save({
 			method:"upsert",
 			key:db.key(["User", fingerprint]),
-			data:{
-				username: body.username,
-				bio: body.bio,
-				pubkey: body.pubkey,
-				signature: body.signature,
-			},
+			data
 		})
-			.then(result => res.json({fingerprint, username:body.username}))
+			.then(result => res.json(Object.assign({fingerprint}, data)))
 			.catch(err => next(httpErrors[500]("Database error.")))
 		
 	});

@@ -1,0 +1,13 @@
+.User_input{
+	border:none;
+	font-size:inherit;
+	line-height:inherit;
+	background:inherit;
+	resize:none;
+	width:100%;
+}
+
+.User_input-edit{
+	font-size:14px;
+	margin-bottom:20px;
+}
