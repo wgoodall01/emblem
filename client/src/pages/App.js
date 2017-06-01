@@ -15,6 +15,11 @@ const NotFound = (props) => <div>
 	<p>Go back, or try another link perhaps.</p>
 </div>
 
+/*
+ * The App component.
+ * Renders the navbar, navigation container, etc.
+ * Also does all routing.
+ */
 const App = (props) => {
 	return <div>
 		<Helmet defaultTitle="Emblem" titleTemplate="%s - Emblem">

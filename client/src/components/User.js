@@ -7,6 +7,13 @@ import "./User.css";
 import {loadUser, updateUser, submitUser} from "actions.js";
 import cu from "cryptoUtils.js";
 
+/*
+ * Displays a user.
+ * If it's you, it lets you edit yourself.
+ *
+ * Props:
+ * fingerprint - the fingerprint of the user to display.
+ */
 class User extends React.PureComponent{
 	constructor(props){
 		super(props);

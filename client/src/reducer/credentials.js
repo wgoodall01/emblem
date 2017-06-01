@@ -3,6 +3,10 @@
 
 const defaultState = {unknown:true, isLoading:false};
 
+/* 
+ * Redux reducer for the user's credentials.
+ * Takes care of the public/private keys and fingerprint.
+ */
 const credentialsReducer = (state, action) => {
 	const newCreds = Object.assign(defaultState, state.credentials);
 	switch(action.type){

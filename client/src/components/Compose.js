@@ -11,6 +11,12 @@ import cu from "cryptoUtils.js";
 import {Redirect} from "react-router";
 
 
+/*
+ * Sign the post with the user's credentials.
+ * @param contents string The contents of the message.
+ * @param credentials Object the credentials object.
+ * @param onSubmit Function the post submit action.
+ */
 const processPost = (contents, credentials, onSubmit) => {
 	let post = {}
 	post.contents = contents;
@@ -20,6 +26,12 @@ const processPost = (contents, credentials, onSubmit) => {
 	onSubmit(post);
 }
 
+/*
+ * Post editor.
+ * 
+ * reads state from the redux state.compose.*
+ * Submits a submitDraft() action when post is clicked.
+ */
 const Composer = props => (
 	props.isUnknownUser?
 	<CredentialGenerator to="make a post"/>

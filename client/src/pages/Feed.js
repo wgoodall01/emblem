@@ -6,6 +6,9 @@ import {loadFeed} from "actions.js";
 import LayoutContainer from "components/LayoutContainer";
 import Button from "components/Button";
 
+/*
+ * Displays the post feed for all users.
+ */
 class Feed extends React.PureComponent{
 	constructor(props){
 		super(props);

@@ -10,6 +10,10 @@ const defaultState = {
 	latestId:undefined // set this to something on successful post
 }
 
+/*
+ * Redux reducer for the composer.
+ * Takes care of all the data for state.compose.
+ */
 const composeReducer = (state, action) => {
 	const newCompose = Object.assign(defaultState, state.compose);
 	switch(action.type){

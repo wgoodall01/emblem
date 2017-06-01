@@ -1,5 +1,9 @@
 import React from "react";
 
+/*
+ * Flexbox container component.
+ * Basically copies props to the flexbox css attributes.
+ */
 const LayoutContainer = (props) => (
 	<div style={{
 		display:"flex",

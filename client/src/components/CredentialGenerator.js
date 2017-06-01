@@ -4,6 +4,14 @@ import {generateCredentials} from "actions.js";
 import {connect} from "react-redux";
 import "./CredentialGenerator.css";
 
+/*
+ * Generate account credentials.
+ *
+ * Props:
+ * to - you need an account to {props.to}.
+ *
+ * Stores to redux credentials when done.
+ */
 const CredentialGenerator = (props) => (<div className="CredentialGenerator">
 	<h1>Create Account?</h1>
 	<p>You need an account to {props.to}. To make one instantly, just click the button below. You can set up a username and bio later on.</p>

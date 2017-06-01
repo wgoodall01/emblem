@@ -8,6 +8,11 @@ const UserPage = (props) => (
 )
 
 
+/*
+ * Displays a user's page.
+ * This takes the fingerprint from the query parameter.
+ * If you don't have an account, it prompts you to make one.
+ */
 let MePage = (props) => {
 	if(typeof props.fingerprint === "undefined"){
 		// User account doesn't exist.

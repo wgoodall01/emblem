@@ -1,6 +1,10 @@
 import React from "react";
 import spinnerUrl from "assets/spinner.svg";
 
+/*
+ * Loading spinner.
+ * Displays an animated loading spinner (if your browser supports animated svg)
+ */
 const LoadingSpinner = (props) => (
 	<div style={{display:"flex", justifyContent:"center"}}>
 		<img 

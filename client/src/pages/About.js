@@ -1,5 +1,9 @@
 import React from "react";
 
+/*
+ * About page.
+ * Nothing really, just some copy and a link to the project pdf.
+ */
 const About = (props) => (<div>
 	<h1>About Emblem</h1>
 	<p>Emblem is a cryptographically verified social network.</p>

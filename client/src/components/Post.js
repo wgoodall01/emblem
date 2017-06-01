@@ -4,6 +4,12 @@ import LayoutContainer from "components/LayoutContainer.js";
 
 import "./Post.css"
 
+/*
+ * Displays a post.
+ *
+ * Props:
+ * post - the post object to display.
+ */
 const Post = (props) => (<div className="Post">
 	<LayoutContainer justifyContent="space-between" className="Post_info-container">
 		<div className="Post_author">

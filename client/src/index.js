@@ -11,7 +11,7 @@ import {setCredentials} from "actions.js";
 import reducer from "./reducer"
 const store = createStore(reducer, applyMiddleware(thunk));
 
-// For development
+// For development, add store and actions to `window`.
 import {addPost, updateUser, updateFeed, loadFeed, loadUser} from "./actions.js";
 if(process.env.NODE_ENV !== "production"){
 	window.store = store;
@@ -24,6 +24,7 @@ if(storedCreds !== null){
 	store.dispatch(setCredentials(JSON.parse(storedCreds)));
 }
 
+// Mount the app to the DOM
 ReactDOM.render(
 	<Provider store={store}>
 		<Router>
