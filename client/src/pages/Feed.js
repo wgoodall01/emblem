@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import Post from "components/Post.js";
 import LoadingSpinner from "components/LoadingSpinner";
 import {loadFeed} from "actions.js";
+import LayoutContainer from "components/LayoutContainer";
+import Button from "components/Button";
 
 class Feed extends React.PureComponent{
 	constructor(props){
@@ -12,7 +14,10 @@ class Feed extends React.PureComponent{
 
 	render(){
 		return (<div>
-			<h1>Feed</h1>
+			<LayoutContainer justifyContent="space-between" alignItems="center">
+				<h1>Feed</h1>
+				<a href="#" onClick={e => this.props.loadFeed()}>   Reload</a>
+			</LayoutContainer>
 			{this.props.isLoading?<LoadingSpinner/>:undefined}
 			{this.props.isError?
 					<div>Error: {this.props.err.toString()}</div>

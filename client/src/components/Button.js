@@ -10,6 +10,7 @@ const Button = (props) => (
 			"Button_outline":props.outline,
 		})}
 		onClick={e => props.onClick(e)}
+		style={props.style}
 	>
 		{props.label}
 	</button>
