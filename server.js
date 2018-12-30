@@ -6,6 +6,9 @@ const path = require("path");
 global.DEV = process.env.NODE_ENV !== "production";
 const PORT = parseInt(process.env.PORT) || 8080;
 const SPA_ROOT = path.resolve("./client/build");
+const gcloudCredentials = process.env.GCLOUD_CREDENTIALS
+  ? JSON.parse(process.env.GCLOUD_CREDENTIALS)
+  : undefined;
 
 const morgan = require("morgan");
 const express = require("express");
@@ -17,7 +20,8 @@ const gcloudDatastore = require("@google-cloud/datastore");
 
 // Connect to Datastore
 const db = gcloudDatastore({
-  projectId: process.env.DATASTORE_PROJECT_ID
+  projectId: process.env.DATASTORE_PROJECT_ID,
+  credentials: gcloudCredentials
 });
 
 // Setup Express app

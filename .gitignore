@@ -19,3 +19,4 @@ yarn-error.log*
 
 __data
 __dummyData.json
+service-account.json

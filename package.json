@@ -9,11 +9,15 @@
   "scripts": {
     "server.start": "cross-env NODE_ENV=production node server.js",
     "client.build": "cd client && yarn build --silent",
-    "db.dev": "gcloud beta emulators datastore start --data-dir __data --host-port localhost:8079 --project wgoodall01-emblem",
-    "server.dev": "$(gcloud beta emulators datastore env-init --data-dir __data --project wgoodall01-emblem) && NODE_ENV=development PORT=8080 nodemon --inspect server.js",
-    "repl": "$(gcloud beta emulators datastore env-init --data-dir __data --project wgoodall01-emblem) && NODE_ENV=development node",
+    "db.dev":
+      "gcloud beta emulators datastore start --data-dir __data --host-port localhost:8079 --project wgoodall01-emblem",
+    "server.dev":
+      "$(gcloud beta emulators datastore env-init --data-dir __data --project wgoodall01-emblem) && NODE_ENV=development PORT=8080 nodemon --inspect server.js",
+    "repl":
+      "$(gcloud beta emulators datastore env-init --data-dir __data --project wgoodall01-emblem) && NODE_ENV=development node",
     "client.dev": "cd client && yarn start --silent",
-    "install": "cd client && yarn"
+    "install": "cd client && yarn",
+    "heroku-postbuild": "cd client && yarn install && yarn build"
   },
   "author": "William Goodall <wgoodall01@gmail.com>",
   "license": "MIT",
