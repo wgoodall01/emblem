@@ -7,6 +7,8 @@ import "./User.css";
 import { loadUser, updateUser, submitUser } from "actions.js";
 import cu from "cryptoUtils.js";
 
+import { animated, Trail } from "react-spring";
+
 /*
  * Displays a user.
  * If it's you, it lets you edit yourself.
@@ -55,22 +57,22 @@ class User extends React.PureComponent {
       typeof this.props.user.bio === "undefined" ? "Hi!" : this.props.user.bio;
 
     return (
-      <div>
-        {this.props.isMe ? (
-          <h1>
-            <input
-              className="User_input"
-              name="username"
-              onChange={e => this.onChange(e)}
-              onBlur={e => this.sendChanges(e)}
-              value={name}
-            />
-          </h1>
-        ) : (
-          <h1>{name}</h1>
-        )}
-        {this.props.isMe ? (
-          <p>
+      <div className="User">
+        <div className="User_left">
+          {this.props.isMe ? (
+            <h1>
+              <input
+                className="User_input"
+                name="username"
+                onChange={e => this.onChange(e)}
+                onBlur={e => this.sendChanges(e)}
+                value={name}
+              />
+            </h1>
+          ) : (
+            <h1>{name}</h1>
+          )}
+          {this.props.isMe ? (
             <textarea
               className="User_input"
               name="bio"
@@ -78,17 +80,31 @@ class User extends React.PureComponent {
               onBlur={e => this.sendChanges(e)}
               value={bio}
             />
-          </p>
-        ) : (
-          <p>{bio}</p>
-        )}
-        {this.props.isMe ? (
-          <div className="User_input-edit">(click username/bio to edit)</div>
-        ) : (
-          undefined
-        )}
-        {this.props.isMe ? <Compose /> : undefined}
-        {this.props.posts.map(p => <Post key={p.hash} post={p} />)}
+          ) : (
+            <p>{bio}</p>
+          )}
+          {this.props.isMe ? (
+            <div className="User_input-edit">(click username/bio to edit)</div>
+          ) : (
+            undefined
+          )}
+        </div>
+        <div className="User_right">
+          {this.props.isMe ? <Compose /> : undefined}
+          <Trail
+            native
+            items={this.props.posts}
+            keys={p => p.hash}
+            from={{ transform: "translate3d(0, 40px, 0)", opacity: 0 }}
+            to={{ transform: "translate3d(0, 0px, 0)", opacity: 1 }}
+          >
+            {item => props => (
+              <animated.div style={props}>
+                <Post post={item} />
+              </animated.div>
+            )}
+          </Trail>
+        </div>
       </div>
     );
   }

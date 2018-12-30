@@ -1,13 +1,39 @@
-.User_input{
-	border:none;
-	font-size:inherit;
-	line-height:inherit;
-	background:inherit;
-	resize:none;
-	width:100%;
+.User {
+  display: flex;
+  flex-direction: row;
+  padding-top: 50px;
+  margin: 0 -20px;
+  flex-wrap: wrap;
 }
 
-.User_input-edit{
-	font-size:14px;
-	margin-bottom:20px;
+.User_left {
+  flex: 0;
+  flex-basis: 300px;
+  margin: 0 20px;
+}
+
+.User_right {
+  flex: 1;
+  flex-basis: 400px;
+  margin: 0 20px;
+}
+
+.User_input {
+  border: none;
+  font-size: inherit;
+  font: inherit;
+  line-height: inherit;
+  background: inherit;
+  resize: none;
+  width: 100%;
+}
+
+textarea.User_input {
+  height: 10em;
+  resize: y;
+}
+
+.User_input-edit {
+  font-size: 14px;
+  margin-bottom: 20px;
 }

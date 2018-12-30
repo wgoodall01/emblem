@@ -13,6 +13,12 @@
   max-width: 400px;
 }
 
+@media screen and (max-width: 600px) {
+  .Landing_center {
+    margin: 0 20px;
+  }
+}
+
 .Landing_center h2 {
   font-size: 1.3em;
   font-weight: normal;

@@ -5,6 +5,9 @@ import LoadingSpinner from "components/LoadingSpinner";
 import { loadFeed } from "actions.js";
 import LayoutContainer from "components/LayoutContainer";
 import Button from "components/Button";
+import "./Feed.css";
+
+import { animated, Trail } from "react-spring";
 
 /*
  * Displays the post feed for all users.
@@ -17,19 +20,33 @@ class Feed extends React.PureComponent {
 
   render() {
     return (
-      <div>
+      <div className="Feed">
         <LayoutContainer justifyContent="space-between" alignItems="center">
           <h1>Feed</h1>
-          <a href="#" onClick={e => this.props.loadFeed()}>
-            {" "}
-            Reload
-          </a>
+          <Button
+            small
+            inverse
+            onClick={e => this.props.loadFeed()}
+            label="Reload"
+          />
         </LayoutContainer>
         {this.props.isLoading ? <LoadingSpinner /> : undefined}
         {this.props.isError ? (
           <div>Error: {this.props.err.toString()}</div>
         ) : (
-          this.props.posts.map(p => <Post key={p.hash} post={p} />)
+          <Trail
+            native
+            items={this.props.posts}
+            keys={p => p.hash}
+            from={{ transform: "translate3d(0, 40px, 0)", opacity: 0 }}
+            to={{ transform: "translate3d(0, 0px, 0)", opacity: 1 }}
+          >
+            {item => props => (
+              <animated.div style={props}>
+                <Post post={item} />
+              </animated.div>
+            )}
+          </Trail>
         )}
       </div>
     );

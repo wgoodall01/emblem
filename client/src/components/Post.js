@@ -1,6 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LayoutContainer from "components/LayoutContainer.js";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
+TimeAgo.addLocale(en);
+const timeAgo = new TimeAgo("en-US");
 
 import "./Post.css";
 
@@ -11,7 +16,7 @@ import "./Post.css";
  * post - the post object to display.
  */
 const Post = props => (
-  <div className="Post">
+  <div className="Post" style={props.style}>
     <LayoutContainer
       justifyContent="space-between"
       className="Post_info-container"
@@ -21,9 +26,13 @@ const Post = props => (
           {props.post.username || props.post.fingerprint.substring(0, 12)}
         </Link>
       </div>
-      {!props.post.isValid ? <div>INVALID POST</div> : undefined}
+      {!props.post.isValid ? (
+        <div className="Post_invalid">INVALID POST</div>
+      ) : (
+        undefined
+      )}
       <div className="Post_timestamp">
-        {new Date(props.post.timestamp).toString()}
+        {timeAgo.format(new Date(props.post.timestamp), "twitter")}
       </div>
     </LayoutContainer>
     <div className="Post_contents">{props.post.contents}</div>

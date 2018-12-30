@@ -1,35 +1,39 @@
-.Button{
-	padding:10px;
-	padding-left:20px;
-	padding-right:20px;
-	margin-top:5px;
-	display:inline-block;
-	border:none;
-	border-radius:5px;
-	font-size:20px;
-	cursor:pointer;
-	transition:.2s;
-	color: var(--color-white);
-	background-color: var(--color-primary);
+.Button {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 5px;
+  display: inline-block;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: var(--color-white);
+  background-color: var(--color-primary);
 }
 
-.Button:hover{
-	box-shadow: 0px 0px 10px -1px rgba(0,0,0,0.5);
+.Button_sm {
+  font-size: unset;
 }
 
-.Button.Button_inverse{
-	color:var(--color-primary);
-	background-color:var(--color-white);
+.Button:hover {
+  box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.5);
 }
 
-.Button.Button_outline{
-	color:var(--color-primary);
-	border:1px solid var(--color-primary);
-	background:none;
+.Button.Button_inverse {
+  color: var(--color-primary);
+  background-color: var(--color-white);
 }
 
-.Button.Button_outline.Button_inverse{
-	color:var(--color-white);
-	border:1px solid var(--color-white);
-	background:none;
+.Button.Button_outline {
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  background: none;
+}
+
+.Button.Button_outline.Button_inverse {
+  color: var(--color-white);
+  border: 1px solid var(--color-white);
+  background: none;
 }

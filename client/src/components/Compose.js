@@ -36,16 +36,15 @@ const Composer = props =>
     <CredentialGenerator to="make a post" />
   ) : (
     <div className="Post">
-      <div className="Post_author Post_info-container">
-        {props.user.username || props.credentials.fingerprint.substring(0, 12)}
-      </div>
       <textarea
         className="Post_editable"
+        placeholder="Compose a post"
         onChange={e => props.onUpdate(e.target.value)}
         value={props.contents}
       />
       <LayoutContainer flexDirection="row-reverse">
         <Button
+          outline
           label="Post"
           onClick={e =>
             processPost(props.contents, props.credentials, props.onSubmit)
