@@ -1,17 +1,11 @@
+#!/usr/bin/env node
+
 const path = require("path");
 
 // Some configuration stuff
 global.DEV = process.env.NODE_ENV !== "production";
 const PORT = parseInt(process.env.PORT) || 8080;
 const SPA_ROOT = path.resolve("./client/build");
-
-// Stackdriver agents for prod
-if (!DEV) {
-  const gcloudTrace = require("@google-cloud/trace-agent");
-  const gcloudDebug = require("@google-cloud/debug-agent");
-  const traceAgent = gcloudTrace.start();
-  const debugAgent = gcloudDebug.start({ allowExpressions: true });
-}
 
 const morgan = require("morgan");
 const express = require("express");
