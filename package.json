@@ -17,7 +17,7 @@
       "$(gcloud beta emulators datastore env-init --data-dir __data --project wgoodall01-emblem) && NODE_ENV=development node",
     "client.dev": "cd client && yarn start --silent",
     "install": "cd client && yarn",
-    "heroku-postbuild": "cd client && yarn install && yarn build"
+    "heroku-postbuild": "cd client && yarn build"
   },
   "author": "William Goodall <wgoodall01@gmail.com>",
   "license": "MIT",
