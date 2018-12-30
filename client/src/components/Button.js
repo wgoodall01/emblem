@@ -12,19 +12,18 @@ import classnames from "classnames";
  * style - button style.
  *
  */
-const Button = (props) => (
-	<button 
-		className={classnames({
-			"Button":true, 
-			"Button_inverse":props.inverse, 
-			"Button_outline":props.outline,
-		})}
-		onClick={e => props.onClick(e)}
-		style={props.style}
-	>
-		{props.label}
-	</button>
-		
-)
+const Button = props => (
+  <button
+    className={classnames({
+      Button: true,
+      Button_inverse: props.inverse,
+      Button_outline: props.outline
+    })}
+    onClick={e => props.onClick(e)}
+    style={props.style}
+  >
+    {props.label}
+  </button>
+);
 
-export default Button
+export default Button;

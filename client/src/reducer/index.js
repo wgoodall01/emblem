@@ -8,10 +8,10 @@ import credentialsReducer from "./credentials.js";
  * In the future, I would use combineReducers() and more planning for this.
  */
 const rootReducer = (state, action) => {
-	state = mainReducer(state, action);
-	state = composeReducer(state, action);
-	state = credentialsReducer(state, action);
-	return state;
-}
+  state = mainReducer(state, action);
+  state = composeReducer(state, action);
+  state = credentialsReducer(state, action);
+  return state;
+};
 
 export default rootReducer;
