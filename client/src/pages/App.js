@@ -35,22 +35,23 @@ const App = props => {
               Emblem
             </NavLink>
             <nav className="App_nav-links-container">
-              {[
-                ["/about", "About"],
-                ["/", "Feed"],
-                ["/me", "Me", "App_nav-link-button"]
-              ].map((e, i, arr) => (
-                <span key={i}>
-                  <NavLink
-                    exact
-                    to={e[0]}
-                    activeClassName="App_nav-link-active"
-                    className={classnames("App_nav-link", e[2])}
-                  >
-                    {e[1]}
-                  </NavLink>
-                </span>
-              ))}
+              <a href="/About-Emblem.pdf" className="App_nav-link">
+                About Emblem
+              </a>
+              {[["/", "Feed"], ["/me", "Me", "App_nav-link-button"]].map(
+                (e, i, arr) => (
+                  <span key={i}>
+                    <NavLink
+                      exact
+                      to={e[0]}
+                      activeClassName="App_nav-link-active"
+                      className={classnames("App_nav-link", e[2])}
+                    >
+                      {e[1]}
+                    </NavLink>
+                  </span>
+                )
+              )}
             </nav>
           </div>
         </div>
