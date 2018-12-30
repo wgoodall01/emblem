@@ -14,21 +14,17 @@
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
-    "react-scripts": "2.0.0",
+    "react-scripts": "0.9.5",
     "react-spinkit": "^3.0.0",
     "react-spring": "^7.2.5",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0",
-    "snyk": "^1.119.0"
+    "redux-thunk": "^2.2.0"
   },
   "proxy": "http://localhost:8080/",
   "scripts": {
     "start": "cross-env NODE_PATH=src:../lib react-scripts start",
     "build": "cross-env NODE_PATH=src:../lib react-scripts build",
     "test": "cross-env NODE_PATH=src:../lib react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
-  },
-  "snyk": true
+    "eject": "react-scripts eject"
+  }
 }
