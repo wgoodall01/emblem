@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import LayoutContainer from "components/LayoutContainer.js";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import "./Post.css";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
-
-import "./Post.css";
 
 /*
  * Displays a post.

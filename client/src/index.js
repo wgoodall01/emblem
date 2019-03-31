@@ -7,11 +7,6 @@ import thunk from "redux-thunk";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import { setCredentials } from "actions.js";
-
-import reducer from "./reducer";
-const store = createStore(reducer, applyMiddleware(thunk));
-
-// For development, add store and actions to `window`.
 import {
   addPost,
   updateUser,
@@ -19,6 +14,11 @@ import {
   loadFeed,
   loadUser
 } from "./actions.js";
+import reducer from "./reducer";
+
+const store = createStore(reducer, applyMiddleware(thunk));
+
+// For development, add store and actions to `window`.
 if (process.env.NODE_ENV !== "production") {
   window.store = store;
   window.actions = { addPost, updateUser, updateFeed, loadFeed, loadUser };
