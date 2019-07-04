@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.13.5
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -22,3 +22,12 @@ patch:
         patched: '2019-05-06T08:38:58.848Z'
     - '@google-cloud/datastore > google-gax > google-auto-auth > google-auth-library > gcp-metadata > axios':
         patched: '2019-05-06T08:38:58.848Z'
+  SNYK-JS-LODASH-450202:
+    - '@google-cloud/datastore > google-gax > lodash':
+        patched: '2019-07-04T08:42:11.171Z'
+    - request-promise-native > request-promise-core > lodash:
+        patched: '2019-07-04T08:42:11.171Z'
+    - '@google-cloud/datastore > google-auto-auth > async > lodash':
+        patched: '2019-07-04T08:42:11.171Z'
+    - '@google-cloud/datastore > google-gax > google-auto-auth > async > lodash':
+        patched: '2019-07-04T08:42:11.171Z'
