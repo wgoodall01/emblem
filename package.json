@@ -30,7 +30,7 @@
     "json-loader": "^0.5.4",
     "keypair": "^1.0.1",
     "morgan": "^1.8.1",
-    "node-rsa": "^0.4.2",
+    "node-rsa": "^1.0.6",
     "request-promise-native": "^1.0.4",
     "snyk": "^1.161.1"
   },
