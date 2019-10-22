@@ -35,7 +35,7 @@
     "snyk": "^1.161.1"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.19.4"
   },
   "snyk": true
 }
